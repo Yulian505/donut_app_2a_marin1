@@ -1,48 +1,44 @@
 import 'package:flutter/material.dart';
-
 import '../utils/donut_tile.dart';
 
-class  BurgerTab extends StatelessWidget {
+class BurgerTab extends StatelessWidget {
+  // Change this to include the flavor parameter
+  final Function(String, double) onAddToCart;
 
-  //lista de donas
-  final List donutsOnSale = [
-      // [ donutFlavor, donutStore, donutPrice, donutColor, imageName ]
-   ["Ice Cream", "Krispy Cream", "36", Colors.blue, "lib/images/icecream_donut.png"],
-   ["Strawberry", "Dunkin Donuts", "45", Colors.red, "lib/images/strawberry_donut.png"],
-   ["Grape Ape", "Krispy Cream", "84", Colors.purple, "lib/images/grape_donut.png"],
-   ["Choco", "Dunkin Donuts", "95", Colors.brown, "lib/images/chocolate_donut.png"],
-   ["Ice Cream", "Krispy Cream", "36", Colors.blue, "lib/images/icecream_donut.png"],
-   ["Strawberry", "Dunkin Donuts", "45", Colors.red, "lib/images/strawberry_donut.png"],
-   ["Grape Ape", "Krispy Cream", "84", Colors.purple, "lib/images/grape_donut.png"],
-   ["Choco", "Dunkin Donuts", "95", Colors.brown, "lib/images/chocolate_donut.png"],
+  BurgerTab({super.key, required this.onAddToCart});
 
+  // Lista de hamburguesas en venta
+  final List<List<dynamic>> burgersOnSale = [
+    ["Classic", "Burger King", 75.0, Colors.brown, "lib/images/classic_burger.jpg"],
+    ["Cheese", "McDonald's", 85.0, Colors.amber, "lib/images/cheese_burger.webp"],
+    ["Double", "Wendy's", 95.0, Colors.deepOrange, "lib/images/double_burger.png"],
+    ["Bacon", "Burger King", 105.0, Colors.redAccent, "lib/images/bacon_burger.png"],
+    ["Veggie", "McDonald's", 80.0, Colors.green, "lib/images/veggie_burger.jpg"],
+    ["Chicken", "Wendy's", 90.0, Colors.orange, "lib/images/chicken_burger.webp"],
+    ["Fish", "Burger King", 85.0, Colors.blue, "lib/images/spicy_burger.png"],
+    ["BBQ", "McDonald's", 100.0, Colors.brown, "lib/images/bbq_burger.png"],
   ];
-  BurgerTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      //Cuantos elementos tiene
-      itemCount: donutsOnSale.length,
+      itemCount: burgersOnSale.length,
       padding: const EdgeInsets.all(12),
-      //Encargado de organizar la cuadrícula
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //Widget desplazable y eficiente para listar y encabezados
-
-        //Determinar el número de columnas
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        //Relación de aspecto
-        childAspectRatio: 1 / 1.5),
-      itemBuilder: (context, index){
+        childAspectRatio: 1 / 1.5,
+      ),
+      itemBuilder: (context, index) {
         return DonutTile(
-          //Elemento individual de la cuadrícula
-          donutFlavor: donutsOnSale[index][0],
-          donutStore: donutsOnSale[index][1],
-          donutPrice: donutsOnSale[index][2],
-          donutColor: donutsOnSale[index][3],
-          imageName: donutsOnSale[index][4],
+          donutFlavor: burgersOnSale[index][0],
+          donutStore: burgersOnSale[index][1],
+          donutPrice: burgersOnSale[index][2],
+          donutColor: burgersOnSale[index][3],
+          imageName: burgersOnSale[index][4],
+          // Pass both flavor and price to onAddToCart
+          onAddToCart: () => onAddToCart(burgersOnSale[index][0], burgersOnSale[index][2]),
         );
-      });
-    
+      },
+    );
   }
 }

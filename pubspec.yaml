@@ -30,10 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  go_router: ^10.0.0  # Corregido: ahora está al mismo nivel que flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  firebase_auth: ^3.3.14
 
 dev_dependencies:
   flutter_test:

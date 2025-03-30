@@ -14,6 +14,21 @@ class HomePage extends StatefulWidget {
 }
  
 class _HomePageState extends State<HomePage> {
+  // Add cart state with more detailed information
+  List<Map<String, dynamic>> cartItems = [];
+  double totalPrice = 0;
+
+  // Function to add items to cart with more details
+  void addToCart(String itemName, String flavor, double price) {
+    setState(() {
+      cartItems.add({
+        'name': itemName,
+        'flavor': flavor,
+        'price': price,
+      });
+      totalPrice += price;
+    });
+  }
 
   List<Widget> myTabs = [
     //Donut tab
@@ -74,11 +89,12 @@ class _HomePageState extends State<HomePage> {
             //Tab bar View(Contenido de pestañas)
             Expanded(
               child: TabBarView(children: [
-                DonutTab(),
-                BurgerTab(),
-                SmoothieTab(),
-                PancakesTab(),
-                PizzaTab(),
+                // Pass the addToCart function to each tab with flavor parameter
+                DonutTab(onAddToCart: (price) => addToCart("Donut", "Various", price)),
+                BurgerTab(onAddToCart: (flavor, price) => addToCart("Burger", flavor, price)),
+                SmoothieTab(onAddToCart: (price) => addToCart("Smoothie", "Various", price)),
+                PancakesTab(onAddToCart: (price) => addToCart("Pancake", "Various", price)),
+                PizzaTab(onAddToCart: (price) => addToCart("Pizza", "Various", price)),
               ],)
             ),
             //Carrito
@@ -93,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column (
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('2 Items | \$45',
+                      Text('${cartItems.length} Items | \$${totalPrice.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
@@ -106,7 +122,45 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                  ElevatedButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          // Show cart items in a dialog or navigate to cart page
+                          if (cartItems.isNotEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Your Cart'),
+                                content: Container(
+                                  width: double.maxFinite,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: cartItems.length,
+                                    itemBuilder: (context, index) {
+                                      final item = cartItems[index];
+                                      return ListTile(
+                                        title: Text('${item['name']}'),
+                                        subtitle: Text('${item['flavor']}'),
+                                        trailing: Text('\$${item['price'].toStringAsFixed(2)}'),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Close'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Checkout logic would go here
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Checkout'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        }, 
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255,218,113,148),
                           padding: const EdgeInsets.symmetric(

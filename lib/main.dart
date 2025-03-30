@@ -1,5 +1,10 @@
 import 'package:donut_app_2a_marin1/pages/home_page.dart';
 import 'package:flutter/material.dart';
+// Importamos las pantallas de autenticación
+import 'package:donut_app_2a_marin1/pages/login.dart';
+import 'package:donut_app_2a_marin1/pages/verify.dart';
+import 'package:donut_app_2a_marin1/pages/forgot.dart';
+import 'package:donut_app_2a_marin1/pages/reset.dart';
  
 void main() {
   runApp(const MyApp());
@@ -8,7 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
  
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,8 +22,42 @@ class MyApp extends StatelessWidget {
         tabBarTheme: const TabBarTheme(indicatorColor: Colors.pink),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        // Añadimos estilos para los inputs y botones
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.deepPurple.shade300, width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
       ),
-      home: const HomePage(),
+      // Cambiamos la página inicial a LoginScreen
+      home: const LoginScreen(),
+      // Definimos las rutas para la navegación
+      routes: {
+        '/home': (context) => const HomePage(),
+        '/login': (context) => const LoginScreen(),
+        '/verify-email': (context) => const VerifyEmailScreen(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
+        '/reset-password': (context) => const ResetPasswordScreen(),
+      },
     );
   }
 }
+
