@@ -5,6 +5,7 @@ import 'package:donut_app_2a_marin1/tabs/pizza_tab.dart';
 import 'package:donut_app_2a_marin1/tabs/smoothie_tab.dart';
 import 'package:donut_app_2a_marin1/utils/my_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:donut_app_2a_marin1/pages/drawer.dart';
  
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,17 +52,68 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          //Ícono de la Izquierda
-          leading: Icon(
-            Icons.menu,
-            color: Colors.grey[800],
+          //Ícono de la Izquierda - Modificado para abrir el drawer
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.grey[800],
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
           ),
-          actions: [Padding(
-            padding: const EdgeInsets.only(right: 24.0),
-            child: Icon(Icons.person),
-          )
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.grey[800],
+                ),
+                onPressed: () {
+                  // Show account info or profile page
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Perfil de Usuario'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.account_circle, size: 80, color: Color.fromARGB(255, 218, 113, 148)),
+                          SizedBox(height: 16),
+                          Text('Usuario Demo', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text('usuario@ejemplo.com'),
+                          SizedBox(height: 16),
+                          Text('Miembro desde: Marzo 2025'),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cerrar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            // Navigate to edit profile (you would add this page later)
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Editar perfil - Próximamente"))
+                            );
+                          },
+                          child: Text('Editar Perfil'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
+        // Añadimos el drawer al Scaffold
+        drawer: const MyDrawer(),
         body: Column(
           children: [
             //Texto "I want to Eat"
