@@ -2,7 +2,9 @@ import 'package:donut_app_2a_marin1/pages/home_page.dart';
 import 'package:flutter/material.dart';
 // Importamos las pantallas de autenticación
 import 'package:donut_app_2a_marin1/pages/login.dart';
+import 'package:donut_app_2a_marin1/pages/register.dart';
 import 'package:donut_app_2a_marin1/pages/verify.dart';
+import 'package:donut_app_2a_marin1/pages/email_verification_screen.dart'; // Nueva pantalla
 import 'package:donut_app_2a_marin1/pages/forgot.dart';
 import 'package:donut_app_2a_marin1/pages/reset.dart';
 import 'package:donut_app_2a_marin1/pages/theme_provider.dart';
@@ -74,7 +76,12 @@ class MyApp extends StatelessWidget {
             routes: {
               '/home': (context) => const HomePage(),
               '/login': (context) => const LoginScreen(),
-              '/verify-email': (context) => const VerifyEmailScreen(),
+              '/register': (context) => const RegisterScreen(),
+              '/verify-email': (context) {
+                final email = ModalRoute.of(context)?.settings.arguments as String? ?? '';
+                return EmailVerificationScreen(email: email);
+              },
+              '/verify-old': (context) => const VerifyEmailScreen(),
               '/forgot-password': (context) => const ForgotPasswordScreen(),
               '/reset-password': (context) => const ResetPasswordScreen(),
             },
@@ -84,5 +91,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
